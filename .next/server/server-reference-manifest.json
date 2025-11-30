@@ -1,0 +1,19 @@
+{
+  "node": {
+    "7f2407c857bc4bd8223bfbfb33baebb40de736dfd4": {
+      "workers": {
+        "app/contact/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Fjamie-nisbet%2FApps%2Fhouseoftherisingmojo%2Fcomponents%2Fcontact%2Factions.ts%22%2C%5B%7B%22id%22%3A%227f2407c857bc4bd8223bfbfb33baebb40de736dfd4%22%2C%22exportedName%22%3A%22submitContactForm%22%2C%22filename%22%3A%22components%2Fcontact%2Factions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": true
+        }
+      },
+      "layer": {
+        "app/contact/page": "action-browser"
+      },
+      "filename": "components/contact/actions.ts",
+      "exportedName": "submitContactForm"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "1XzHIkVM2QO3CBzh0UgZaAIgJcm5ymgUoBRDeARn2T0="
+}
