@@ -1,30 +1,64 @@
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 import { NavLink } from "@/components/NavLink";
 import { Instagram } from "lucide-react";
 
 const Footer = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <footer className="bg-foreground text-background py-16">
+    <footer className="bg-foreground text-background py-16" ref={ref}>
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           {/* About */}
-          <div>
+          <motion.div variants={itemVariants}>
             <h3 className="font-serif text-xl font-bold mb-4">House of the Rising Mojo</h3>
             <p className="text-sm opacity-80 mb-4">
               A sanctuary for connection, healing & growth. Located in Santo Isidoro, Portugal.
             </p>
-            <a 
+            <motion.a 
               href="https://instagram.com/houseoftherisingmojo"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm hover:text-primary transition-colors"
+              whileHover={{ scale: 1.05 }}
             >
               <Instagram className="w-5 h-5" />
               @houseoftherisingmojo
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
 
           {/* Links */}
-          <div>
+          <motion.div variants={itemVariants}>
             <h4 className="font-serif text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li>
@@ -48,10 +82,10 @@ const Footer = () => {
                 </NavLink>
               </li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Contact */}
-          <div>
+          <motion.div variants={itemVariants}>
             <h4 className="font-serif text-lg font-semibold mb-4">Contact</h4>
             <div className="space-y-2 text-sm opacity-80">
               <p>
@@ -63,13 +97,18 @@ const Footer = () => {
               <p>2640-086 Santo Isidoro</p>
               <p>Portugal</p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Bottom */}
-        <div className="border-t border-background/20 pt-8 text-center text-sm opacity-70">
+        <motion.div 
+          className="border-t border-background/20 pt-8 text-center text-sm opacity-70"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 0.7 } : { opacity: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <p>&copy; {new Date().getFullYear()} House of the Rising Mojo. All rights reserved.</p>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

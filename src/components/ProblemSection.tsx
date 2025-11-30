@@ -1,6 +1,12 @@
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 import { FastForward, Users, Leaf } from "lucide-react";
 
 const ProblemSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
   const problems = [
     {
       icon: FastForward,
@@ -19,34 +25,78 @@ const ProblemSection = () => {
     }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section className="py-20 md:py-32 bg-muted/30">
+    <section className="py-20 md:py-32 bg-muted/30" ref={ref}>
       <div className="container mx-auto px-4">
-        <h2 className="font-serif text-3xl md:text-5xl font-bold text-center mb-4 text-foreground">
+        <motion.h2 
+          className="font-serif text-3xl md:text-5xl font-bold text-center mb-4 text-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
           We need spaces that nourish the soul
-        </h2>
-        <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
+        </motion.h2>
+        <motion.p 
+          className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           In our fast-paced modern world, we've lost connection with what truly matters
-        </p>
+        </motion.p>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           {problems.map((problem, index) => (
-            <div 
+            <motion.div 
               key={index}
-              className="bg-card rounded-lg p-8 border border-border hover:shadow-lg transition-all duration-300"
+              className="bg-card rounded-lg p-8 border border-border"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03, y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+              transition={{ duration: 0.3 }}
             >
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+              <motion.div 
+                className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ duration: 0.3 }}
+              >
                 <problem.icon className="w-8 h-8 text-primary" />
-              </div>
+              </motion.div>
               <h3 className="font-serif text-xl md:text-2xl font-semibold mb-4 text-foreground">
                 {problem.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed">
                 {problem.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

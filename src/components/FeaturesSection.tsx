@@ -1,7 +1,15 @@
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 import { Bed, Users, Calendar, Flower2, MapPin, Trees } from "lucide-react";
 import yogaImage from "@/assets/yoga-image.jpg";
 
 const FeaturesSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const imageRef = useRef(null);
+  const imageInView = useInView(imageRef, { once: true, margin: "-100px" });
+
   const features = [
     {
       icon: Bed,
@@ -35,43 +43,93 @@ const FeaturesSection = () => {
     }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section className="py-20 md:py-32 bg-muted/30">
+    <section className="py-20 md:py-32 bg-muted/30" ref={ref}>
       <div className="container mx-auto px-4">
-        <h2 className="font-serif text-3xl md:text-5xl font-bold text-center mb-4 text-foreground">
+        <motion.h2 
+          className="font-serif text-3xl md:text-5xl font-bold text-center mb-4 text-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
           Everything you need for rest, connection & growth
-        </h2>
-        <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
+        </motion.h2>
+        <motion.p 
+          className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           Simple facilities, authentic experiences, and natural beauty combine to create the perfect sanctuary
-        </p>
+        </motion.p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           {features.map((feature, index) => (
-            <div 
+            <motion.div 
               key={index}
-              className="bg-card rounded-lg p-8 border border-border hover:shadow-lg transition-all duration-300 group"
+              className="bg-card rounded-lg p-8 border border-border"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03, y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+              transition={{ duration: 0.3 }}
             >
-              <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <motion.div 
+                className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ duration: 0.3 }}
+              >
                 <feature.icon className="w-7 h-7 text-primary" />
-              </div>
+              </motion.div>
               <h3 className="font-serif text-xl font-semibold mb-4 text-foreground">
                 {feature.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed text-sm">
                 {feature.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Image */}
-        <div className="max-w-5xl mx-auto rounded-lg overflow-hidden shadow-xl">
+        <motion.div 
+          className="max-w-5xl mx-auto rounded-lg overflow-hidden shadow-xl"
+          ref={imageRef}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={imageInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.6 }}
+        >
           <img 
             src={yogaImage} 
             alt="Yoga platform at House of the Rising Mojo"
             className="w-full h-auto"
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
